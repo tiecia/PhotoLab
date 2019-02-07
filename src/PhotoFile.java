@@ -6,6 +6,7 @@ public abstract class PhotoFile {
     
     private String fileName;
     
+    
     // Constructor; takes the file name of the file containing the photo
     public PhotoFile(String fileName) {
         this.fileName = fileName;
