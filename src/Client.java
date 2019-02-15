@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 public class Client {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		// Create an array of PhotoImplementation and do the start() method from the GUI on it.
 		PhotoFile[] f = new PhotoImplementation[3];
 		f[0] = new PhotoImplementation("ECHelmet.txt");
 		f[1] = new PhotoImplementation("ECMorning.txt");

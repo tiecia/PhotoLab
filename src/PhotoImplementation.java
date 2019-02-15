@@ -12,15 +12,17 @@ public class PhotoImplementation extends PhotoFile{
 		pixels = load();
 	}
 
+	
+	
 	public Color[][] load() throws FileNotFoundException {
 		File f = new File(getFileName());
 		Scanner s = new Scanner(f);
 		int width = s.nextInt();
 		int height = s.nextInt();
 		
-		Color[][] displayArray = new Color[width][height];
-		for(int i = 0; i<width; i++) {
-			for(int j = 0; j < height; j++) {
+		Color[][] displayArray = new Color[height][width];
+		for(int i = 0; i<height; i++) {
+			for(int j = 0; j < width; j++) {
 				int r = s.nextInt();
 				int g = s.nextInt();
 				int b = s.nextInt();
