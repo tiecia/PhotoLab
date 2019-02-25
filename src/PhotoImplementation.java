@@ -11,6 +11,11 @@ public class PhotoImplementation extends PhotoFile{
 		super(fileName);
 		pixels = load();
 	}
+	
+	public PhotoImplementation(String fileName, Color[][] photo) throws FileNotFoundException {
+		super(fileName);
+		pixels = photo;
+	}
 
 	
 	

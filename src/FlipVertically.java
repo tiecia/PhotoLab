@@ -15,10 +15,6 @@ public class FlipVertically implements PhotoEffect{
 	public Color[][] apply(Color[][] photo) {
 		for(int r = 0; r<photo.length/2; r++) {
 				Color[] cache;
-//				System.out.println("r = " + r);
-//				System.out.println(photo.length - 1);
-//				System.out.println();
-				
 				cache = photo[r];
 				photo[r] = photo[photo.length - r - 1];
 				photo[photo.length - r - 1] = cache;

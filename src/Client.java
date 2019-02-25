@@ -1,16 +1,21 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Client {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		PhotoFile[] f = new PhotoImplementation[3];
-		f[0] = new PhotoImplementation("ECHelmet.txt");
-		f[1] = new PhotoImplementation("ECMorning.txt");
-		f[2] = new PhotoImplementation("ECShield.txt");
-		PhotoEffect[] effects = new PhotoEffect[3];
+		File[] dirFiles = new File("photos/").listFiles();
+		PhotoFile[] f = new PhotoImplementation[dirFiles.length];
+		for(int i = 0; i <dirFiles.length; i++) {
+			f[i] = new PhotoImplementation(dirFiles[i].getPath());
+		}
+		
+		PhotoEffect[] effects = new PhotoEffect[5];
 		effects[0] = new FlipHorizontally("Flip Horizontally");
 		effects[1] = new FlipVertically("Flip Vertically");
 		effects[2] = new ConvertGreyscale("Covert Greyscale");
+		effects[3] = new Shrink("Shrink");
+		effects[4] = new Reflect("Reflect");
 		PhotoLab.start(f, effects);
 	}
 

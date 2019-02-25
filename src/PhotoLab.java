@@ -2,7 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * PhotoLab
@@ -20,8 +25,15 @@ public class PhotoLab {
     private static class PhotoLabFrame extends JFrame implements ActionListener {
 
         PhotoEffect[] effects;
-        PhotoFile[] files;
+//        PhotoFile[] files;
+        ArrayList<PhotoFile> files = new ArrayList<PhotoFile>();
         PhotoLabImagePanel imagePanel;
+        
+        
+        JMenu fileMenu = new JMenu("File");
+        JMenu effectMenu = new JMenu("Effect");;
+        JMenuBar menuBar = new JMenuBar();
+        JMenu openMenu = new JMenu("Open");
 
         // Constructor; builds the main window, adding menu and image panel
         public PhotoLabFrame(PhotoFile[] files, PhotoEffect[] effects) {
@@ -35,25 +47,25 @@ public class PhotoLab {
         }
 
         // Adds a menu bar containing the provided files and effects
-        private void addMenuBar(PhotoFile[] files, PhotoEffect[] effects) {
+        private void addMenuBar(PhotoFile[] newFiles, PhotoEffect[] effects) {
             this.effects = effects;
-            JMenuBar menuBar = new JMenuBar();
 
             // Create a File menu with an entry for each PhotoFile
-            if (files != null) {
-                JMenu fileMenu = new JMenu("File");
-                for (PhotoFile file : files) {
+            if (newFiles != null) {
+                for (PhotoFile file : newFiles) {
                     JMenuItem item = new JMenuItem(file.getFileName());
                     item.addActionListener(this);
                     fileMenu.add(item);
                 }
                 menuBar.add(fileMenu);
             }
-            this.files = files;
+            
+            for(int i = 0; i<newFiles.length; i++) {
+            	files.add(i, newFiles[i]);
+            }
 
             // Create an Effects menu with an entry for each PhotoEffect
             if (effects != null) {
-                JMenu effectMenu = new JMenu("Effect");
                 for (PhotoEffect effect : effects) {
                     JMenuItem item = new JMenuItem(effect.getName());
                     item.addActionListener(this);
@@ -61,9 +73,21 @@ public class PhotoLab {
                 }
                 menuBar.add(effectMenu);
             }
+            
+            JMenuItem openFile = new JMenuItem("Open File");
+            openFile.addActionListener(this);
+            openMenu.add(openFile);
+            menuBar.add(openMenu);
 
             // Add our menu bar to the main window
             setJMenuBar(menuBar);
+        }
+        
+        private void addPhotoToBar(PhotoFile newPhoto) {
+        	JMenuItem item = new JMenuItem(newPhoto.getFileName());
+            item.addActionListener(this);
+            fileMenu.add(item);
+            menuBar.add(fileMenu);
         }
 
         // Adds an image panel to window, loading the first PhotoFile (if any)
@@ -94,6 +118,83 @@ public class PhotoLab {
                         updateImagePanel(effect.apply(imagePanel.getPhoto()));
                     }
                 }
+            }
+            
+            if(e.getActionCommand().equals("Open File")) {
+            	JFileChooser open = new JFileChooser();
+            	FileNameExtensionFilter jpgFilter = new FileNameExtensionFilter(".jpg", "jpg");
+            	FileNameExtensionFilter jpegFilter = new FileNameExtensionFilter(".jpeg", "jpeg");
+            	FileNameExtensionFilter pngFilter = new FileNameExtensionFilter(".png", "png");
+            	
+               	open.setAcceptAllFileFilterUsed(true);
+            	open.setFileFilter(jpgFilter);
+            	open.setFileFilter(jpegFilter);
+            	open.setFileFilter(pngFilter);
+            	open.showOpenDialog(imagePanel);
+            	
+            	boolean notOpen = true;
+            	
+            	for(int i = 0; i < files.size() && notOpen; i++) {
+            		if(files.get(i).getFileName() == open.getSelectedFile().getName()) {
+            			JOptionPane.showMessageDialog(imagePanel, "Image Already Open", "Error", JOptionPane.ERROR_MESSAGE);
+            			notOpen = false;
+            		}
+            	}
+            	
+            	if(open.getSelectedFile() != null && notOpen) {
+	            	File openedImage = open.getSelectedFile();
+	            	BufferedImage image = null;
+	            	try {
+	            		image = ImageIO.read(openedImage);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+	            	Color[][] picture = new Color[image.getHeight()][image.getWidth()];
+	            	
+	            	String outputFileName = "photos/" + openedImage.getName() + ".txt";
+	            	
+	            	System.out.println(outputFileName);
+	            	
+	            	File out = new File(outputFileName);
+	            	PrintStream print = null;
+	            	try {
+						print = new PrintStream(out);
+					} catch (FileNotFoundException e1) {
+						System.out.println("Output File Not Found");
+						e1.printStackTrace();
+					}
+	                
+	            	print.println(image.getWidth() + " " + image.getHeight());
+	            	for(int r = 0; r<picture.length; r++) {
+	            		for(int c = 0; c<picture[r].length; c++) {
+	//            			System.out.println("r: " + r);
+	//            			System.out.println("c: " + c);
+	//            			System.out.println("Height: " + image.getHeight());
+	//            			System.out.println("Width: " + image.getWidth());
+	                        int clr = image.getRGB(c, r);
+	                        int red = (clr & 0x00ff0000) >> 16;
+	                        int green = (clr & 0x0000ff00) >> 8;
+	                        int blue = clr & 0x000000ff;
+	                        print.println(red + " " + green + " " + blue);
+	                        picture[r][c] = new Color(red, green, blue);
+	//            			System.out.println(red + " " + green + " " + blue);
+	//            			System.out.println();
+	            		}
+	            	}
+	            	
+	            	PhotoImplementation newPhoto = null;
+					try {
+						newPhoto = new PhotoImplementation(outputFileName, picture);
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					}
+	            	addPhotoToBar(newPhoto);
+	            	files.add(newPhoto);
+	            	loadPhotoFromFile(newPhoto);
+            	}
+            	
+            	System.out.println("Done...");
+            	
             }
         }
 
