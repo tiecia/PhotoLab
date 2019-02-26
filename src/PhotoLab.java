@@ -25,7 +25,6 @@ public class PhotoLab {
     private static class PhotoLabFrame extends JFrame implements ActionListener {
 
         PhotoEffect[] effects;
-//        PhotoFile[] files;
         ArrayList<PhotoFile> files = new ArrayList<PhotoFile>();
         PhotoLabImagePanel imagePanel;
         
@@ -164,17 +163,17 @@ public class PhotoLab {
 						e1.printStackTrace();
 					}
 	                
-	            	print.println(image.getWidth() + " " + image.getHeight());
+	            	print.println(image.getHeight() + " " + image.getWidth());
 	            	for(int r = 0; r<picture.length; r++) {
 	            		for(int c = 0; c<picture[r].length; c++) {
 	//            			System.out.println("r: " + r);
 	//            			System.out.println("c: " + c);
 	//            			System.out.println("Height: " + image.getHeight());
 	//            			System.out.println("Width: " + image.getWidth());
-	                        int clr = image.getRGB(c, r);
-	                        int red = (clr & 0x00ff0000) >> 16;
-	                        int green = (clr & 0x0000ff00) >> 8;
-	                        int blue = clr & 0x000000ff;
+	                        int color = image.getRGB(c, r);
+	                        int red = (color & 0x00ff0000) >> 16;
+	                        int green = (color & 0x0000ff00) >> 8;
+	                        int blue = color & 0x000000ff;
 	                        print.println(red + " " + green + " " + blue);
 	                        picture[r][c] = new Color(red, green, blue);
 	//            			System.out.println(red + " " + green + " " + blue);

@@ -13,11 +13,11 @@ public class Shrink implements PhotoEffect{
 	}
 	
 	public Color[][] apply(Color[][] photo){
-		int height = (photo.length/2)-1;
-		int width = (photo[0].length/2)-1;
-
+		int width = (photo.length/2);
+		int height = (photo[0].length/2);
 		
-		Color[][] small = new Color[height][width];
+		
+		Color[][] small = new Color[width][height];
 		for(int c = 0; c<photo.length; c+=2) {
 			for(int r = 0; r<photo[0].length; r+=2) {
 				int red = (photo[c][r].getRed() + photo[c+1][r].getRed() + photo[c][r+1].getRed() + photo[c+1][r+1].getRed())/4;
@@ -34,16 +34,16 @@ public class Shrink implements PhotoEffect{
 		
 		int smallC = 0;
 		int smallR = 0;
-		for(int c = 0; c<548; c+=2) {
-			for(int r = 0; r<548; r++) {
+		for(int c = 0; c<photo.length; c+=2) {
+			for(int r = 0; r<photo[0].length; r++) {
 				if(photo[c][r] != null) {
 					small[smallC][smallR] = photo[c][r];
-					System.out.println("SmallR: " + smallR);
+//					System.out.println("SmallR: " + smallR);
 					smallR++;
 				}
 			}
 			smallR = 0;
-			System.out.println("SmallC: " + smallC);
+//			System.out.println("SmallC: " + smallC);
 			smallC++;
 		}
 		return small;

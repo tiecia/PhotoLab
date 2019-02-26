@@ -10,12 +10,14 @@ public class Client {
 			f[i] = new PhotoImplementation(dirFiles[i].getPath());
 		}
 		
-		PhotoEffect[] effects = new PhotoEffect[5];
+		PhotoEffect[] effects = new PhotoEffect[7];
 		effects[0] = new FlipHorizontally("Flip Horizontally");
 		effects[1] = new FlipVertically("Flip Vertically");
 		effects[2] = new ConvertGreyscale("Covert Greyscale");
 		effects[3] = new Shrink("Shrink");
 		effects[4] = new Reflect("Reflect");
+		effects[5] = new InvertColors("Invert Colors");
+		effects[6] = new ChangeHue("Change Hue");
 		PhotoLab.start(f, effects);
 	}
 
