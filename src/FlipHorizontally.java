@@ -16,11 +16,11 @@ public class FlipHorizontally implements PhotoEffect{
 		for(int c = 0; c<photo.length/2; c++) {
 			for(int r = 0; r<photo[c].length; r++) {
 				Color cache;
+//				Save the first pixel to the cache
 				cache = photo[r][c];
-//				System.out.println("r = " + r);
-//				System.out.println("c = " + c);
-//				System.out.println();
-				photo[r][c] = photo[r][photo[r].length - c - 1]; 
+//				Set the first to the last
+				photo[r][c] = photo[r][photo[r].length - c - 1];
+//				Set the last to the first
 				photo[r][photo[r].length - c - 1] = cache;
 			}
 		}

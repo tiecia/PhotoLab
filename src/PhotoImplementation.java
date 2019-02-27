@@ -11,14 +11,19 @@ public class PhotoImplementation extends PhotoFile{
 		super(fileName);
 		pixels = load();
 	}
+	
+	public PhotoImplementation(String fileName, Color[][] photo) throws FileNotFoundException {
+		super(fileName);
+		pixels = photo;
+	}
 
 	
 	
 	public Color[][] load() throws FileNotFoundException {
 		File f = new File(getFileName());
 		Scanner s = new Scanner(f);
-		int width = s.nextInt();
 		int height = s.nextInt();
+		int width = s.nextInt();
 		
 		Color[][] displayArray = new Color[height][width];
 		for(int i = 0; i<height; i++) {
