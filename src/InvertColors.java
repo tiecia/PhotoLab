@@ -16,6 +16,7 @@ public class InvertColors implements PhotoEffect {
 	public Color[][] apply(Color[][] photo) {
 		for(int r = 0; r<photo.length; r++) {
 			for(int c = 0; c<photo[0].length; c++) {
+//				Take each pixel and set it to the opposite color
 				int red = photo[r][c].getRed();
 				int green = photo[r][c].getGreen();
 				int blue = photo[r][c].getBlue();

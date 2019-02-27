@@ -13,6 +13,7 @@ public class ConvertGreyscale implements PhotoEffect{
 	}
 	
 	public Color[][] apply(Color[][] photo){
+		//Set the average of all color values to each RGB value for each pixel
 		for(int r = 0; r<photo.length; r++) {
 			for(int c = 0; c<photo[r].length; c++) {
 				int grey = (photo[r][c].getRed() + photo[r][c].getGreen() + photo[r][c].getBlue())/3;
